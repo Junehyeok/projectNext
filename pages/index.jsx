@@ -10,7 +10,7 @@ const App = () => {
                 <input value={userName} onChange={(e) => setUserName(e.target.value)}/>
             </label>
             <p>{userName}의 깃허브 검색해보기</p>
-            <Link href={'/users/${userName}'}>
+            <Link href={`/users/${userName}`}>
                 <a>검색하기</a>
             </Link>
         </div>

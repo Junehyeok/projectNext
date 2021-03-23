@@ -12,7 +12,7 @@ const name = ({ user, time }) => {
 
 export const getStaticProps = async({ params }) => {
     try {
-        const res = await fetch("https://api.github.com/users/${params.name}");
+        const res = await fetch(`https://api.github.com/users/${params.name}`);
         const user = await res.json();
         if(res.status === 200) {
             const user = await res.json();
@@ -27,7 +27,7 @@ export const getStaticProps = async({ params }) => {
 
 export async function getStaticPaths() {
     return {
-        paths: [{params : {name: "jerrynim" } }],
+        paths: [{params : {name: "Junehyeok" } }],
         fallback : true,
     }
 }
