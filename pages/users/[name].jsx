@@ -1,105 +1,77 @@
-import { GoMail } from "react-icons/go";
 import fetch from "isomorphic-unfetch";
+import Profile from "../../component/Profile";
 import css from "styled-jsx/css";
 
-const style = css`
-    h2 {
-        margin-left:20px;
+const style = css `
+    .user-contents-wrapper {
+        display:flex;
+        padding:20px;
     }
-    .user-bio {
-        margin-top : 12px;
-        font-style: italic;
-    }
-
-    .profile-box {
-        width : 25%;
-        max-width : 272px;
-        margin-right :26px;
-    }
-
-    .profile-image-wrapper {
+    .repos-wrapper {
         width : 100%;
-        border : 1px solid #ele4e8;
+        height : 100vh;
+        overflow : scroll;
+        padding: 0px 16px;
     }
-
-    .profile-image-wrapper .profile-image {
-        display : block;
-        width : 100%;
-    }
-
-    .profile-username {
-        margin : 0;
-        padding-top :16px;
-        font-size : 26px;
-    }
-
-    .profile-user-login {
-        margin:0;
-        font-size:20px;
-    }
-
-    .profile-user-bio {
-        margin:0;
-        padding-top:16px;
+    .repos-header {
+        padding:16px 0;
         font-size:14px;
+        font-weight:600;
+        border-bottom:1px solid #ele4e8;
     }
-
-    .profile-user-info {
-        display : flex;
-        align-items : center;
-        margin: 4px 0 0;
+    .repos-count {
+        display:inline-block;
+        padding:2px 5px;
+        margin-left:6px;
+        font-size:12px;
+        font-weight:600;
+        line-weight:1;
+        color:#586069;
+        background-color:rgba(27,31,35,0.08);
+        border-radius:20px;
     }
+`;
 
-    .profile-user-info-text {
-        margin-left : 6px;
-    }
- `;
-
-const name = ({user}) => {  
+const name = ({ user, repos }) => {
     if(!user) {
         return null;
     }
     return (
         <>
-        { user ? (
-            <div className="profile-box">
-                <div className="profile-image-wrapper">
-                    <img className="profile-image" src={user.avatar_url} alt={`${user.name} 프로필 이미지`} />
+            <div className="user-contents-wrapper">
+                <Profile user={user}/>
+                <div className="repos-wrapper">
+                    <div className="repos-header">
+                        Repsitories
+                        <span className="repos-count">{user.public_repos}</span>
+                    </div>
                 </div>
-                <h2 className="profile-username">{user.name}</h2>
-                <p className="profile-user-login">{user.login}</p>
-                <p className="profile-user-bio">{user.bio}</p>
-                <p className="profile-user-info">
-                    <GoMail size={16} color="#5a737d" />
-                    <span className="profile-user-info-text">{user.email}</span>
-                </p>
+                <style jsx>{style}</style>
             </div>
-        ) : (
-            <div>유저정보가 없습니다.</div>
-        )}
-        <style jsx>{style}</style>
         </>
-    )
+    );
 }
 
-
-/*const name = ({ user }) => {
-    console.log("asdfjkladsjfaklsf")
-    const username = user&&user.name;
-    return <div>{username}</div>;
-};*/
-// terminal yarn add react-icons 설치
 export const getServerSideProps = async({ query }) => {
     const { name } = query;
+
     try {
+        let user;
+        let repos;
+
         const res = await fetch(`https://api.github.com/users/${name}`);
         if(res.status === 200) {
-            const user = await res.json();
+            user = await res.json();
             console.log(user);
-            console.log(user.avatar_url)
-            return {props:{user}};
         }
-        return {props:{}};
+
+        const repoRes = await fetch(`https://api.github.com/users/${name}/repos?sort=updated&page=1&per_page=10`);
+        if(repoRes.status === 200) {
+            repos = await repoRes.json();
+            console.log(repos);
+        }
+
+        return {props:{ user, repos }};
     } catch (e) {
         console.log(e);
         return {props:{}};
