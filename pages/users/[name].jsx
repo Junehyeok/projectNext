@@ -30,6 +30,46 @@ const style = css `
         background-color:rgba(27,31,35,0.08);
         border-radius:20px;
     }
+
+    .repository-wrapper {
+        width : 100%;
+        border-bottom : 1px solid #ele4e8;
+        padding: 24px 0;
+    }
+
+    .repository-description {
+        padding : 12px 0;
+    }
+
+    a {
+        text-decoration : none;
+    }
+
+    .repository-name {
+        margin : 0;
+        color : #0366d6;
+        font-size : 20px;
+        display : inline-block;
+        cursor : pointer;
+    }
+    
+    .repository-name:hover {
+        text-decoration:underline;
+    }
+
+    .repository-description {
+        margin : 0;
+        font-size: 14px;
+    }
+
+    .repository-language {
+        margin : 0;
+        font-size : 14px;
+    }
+
+    .repository-updated-at {
+        margin-left:20px;
+    }
 `;
 
 const name = ({ user, repos }) => {
@@ -45,6 +85,25 @@ const name = ({ user, repos }) => {
                         Repsitories
                         <span className="repos-count">{user.public_repos}</span>
                     </div>
+                    {
+                        user && repos &&
+                        repos.map((repo) => 
+                            <div key={repo.id} className="repository-wrapper">
+                                <a target ="_blank"
+                                rel="noreferrer"
+                                href={`https://github.com/${user.login}/${repo.name}`}>
+                                    <h2 className="repository-name">
+                                        {repo.name}
+                                    </h2>
+                                </a>
+                                <p className="repository-description">{repo.description}</p>
+                                <p className="repository-language">
+                                    {repo.language}
+                                    <span className="repository-updated-at"></span>
+                                </p>
+                            </div>
+                        ) 
+                    }
                 </div>
                 <style jsx>{style}</style>
             </div>
