@@ -1,4 +1,5 @@
 import Header from "../component/Header";
+import { useEffect } from "react";
 
 const MyApp = ({ Component, pageProps }) => {
     return (
