@@ -2,7 +2,6 @@ import fetch from "isomorphic-unfetch";
 import Profile from "../../component/Profile";
 import Repositories from "../../component/Repositories";
 import css from "styled-jsx/css";
-import { useRouter } from "next/router";
 
 const style = css `
     .user-contents-wrapper {
@@ -27,10 +26,7 @@ const name = ({ user, repos }) => {
 }
 
 export const getServerSideProps = async({ query }) => {
-    console.log("//////")
-    console.log(query)
-    const { name } = query;
-
+    const { name, page } = query;
 
     try {
         let user;
@@ -39,13 +35,11 @@ export const getServerSideProps = async({ query }) => {
         const res = await fetch(`https://api.github.com/users/${name}`);
         if(res.status === 200) {
             user = await res.json();
-            console.log(user);
         }
-
-        const repoRes = await fetch(`https://api.github.com/users/${name}/repos?sort=updated&page=1&per_page=10`);
+ 
+        const repoRes = await fetch(`https://api.github.com/users/${name}/repos?sort=updated&page=${page}&per_page=10`);
         if(repoRes.status === 200) {
             repos = await repoRes.json();
-            console.log(repos);
         }
 
         return {props:{ user, repos }};

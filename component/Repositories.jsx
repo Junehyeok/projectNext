@@ -170,24 +170,25 @@ const Repositories = ({ user, repos }) => {
                         </div>
                     ) 
                 }
-            </div>
-            <div className="repository-pagination">
-                <Link href={`/users/${user.login}?page=${Number(page) -1}`}>
-                    <a>
-                    <button type="button" disabled={page && page === "1"}>
-                        Previous
-                    </button>
-                    </a>
-                </Link>
+                <div className="repository-pagination">
+                    <Link href={`/users/${user.login}?page=${Number(page) -1}`}>
+                        <a>
+                        <button type="button" disabled={page && page === "1"}>
+                            Previous
+                        </button>
+                        </a>
+                    </Link>
 
-                <Link href={`/users/${user.login}?page=${!page ? "2" : Number(page) +1}`}>
-                    <a>
-                        <button type="button" disabled={repos.length < 10}>
-                        Next
-                    </button>
-                    </a>
-                </Link>
+                    <Link href={`/users/${user.login}?page=${!page ? "2" : Number(page) +1}`}>
+                        <a>
+                            <button type="button" disabled={repos.length < 10}>
+                            Next
+                        </button>
+                        </a>
+                    </Link>
+                </div>
             </div>
+            
             <style jsx>{style}</style>
             
         </>
