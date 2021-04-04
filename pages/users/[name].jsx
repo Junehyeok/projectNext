@@ -12,10 +12,6 @@ const style = css `
 `;
 
 const name = ({ user, repos }) => {
-    console.log("!!!!")
-    console.log(user)
-    console.log("!!!!")
-
     return (
         <div className="user-contents-wrapper">
             <Profile user={user} />

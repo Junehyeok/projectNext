@@ -1,8 +1,17 @@
-import '../styles/globals.css';
+import Header from "../component/Header";
 
-function MyApp({ Component, pageProps }) {
-  // eslint-disable-next-line react/react-in-jsx-scope
-  return <Component {...pageProps} />;
-}
+const MyApp = ({ Component, pageProps }) => {
+    return (
+        <>
+            <Header />
+            <Component {...pageProps} />
+            <style jsx global>{
+                `body {
+                    margin : 0;
+                }`
+            }</style>
+        </>
+    );
+};
 
 export default MyApp;
